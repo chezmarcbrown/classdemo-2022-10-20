@@ -1,7 +1,4 @@
-# classdemo-2022-10-18
-
-Eventually, this repo will be how the class ends
-`...
+# classdemo-2022-10-20
 
 scp airline490@airline.uaa490.org:www/db.sqlite3 .
 
