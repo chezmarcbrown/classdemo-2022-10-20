@@ -4,7 +4,16 @@
         <meta charset="utf-8">
         <title>Flights</title>
     </head>
+
+
+
     <body>
+        {% if user.is_authenticated %}
+        Welcome <strong>{{user.username}}</strong>. <a href="{% url 'logout' %}">Log Out</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+        <hr>
         {% block body %}
         {% endblock %}
     </body>

@@ -1,6 +1,6 @@
 import re
 from django.shortcuts import render, redirect
-from .models import Flight, Passenger
+from .models import Flight, Passenger, Booking
 
 # Create your views here.
 def index(request):
@@ -18,12 +18,15 @@ def flight(request, flight_id):
     return render(request, "flights/flight.html", {
         "flight": f,
         "non_passengers": Passenger.objects.exclude(flights=f).all(),
-        "passengers": f.passengers.all()
+        "passengers": f.passengers.all(),
+        "bookings": Booking.objects.filter(flight=f)
     })
 
 def book(request, flight_id):
     if request.method == "POST":
         p = Passenger.objects.get(pk=request.POST["passenger"])
         flight = Flight.objects.get(pk=flight_id)
-        p.flights.add(flight)
-        return redirect("flight", flight_id=flight_id)
+        b = Booking(passenger=p, flight=flight, booker=request.user)
+        b.save()
+        #p.flights.add(flight)
+        return redirect("flights:flight", flight_id=flight_id)

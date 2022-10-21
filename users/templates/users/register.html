@@ -1,0 +1,24 @@
+{% extends "users/layout.html" %}
+
+{% block body %}
+
+<h1>Register</h1>
+
+{% if message %}
+<div class="error-message">{{message}}</div>
+{% endif %}
+
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+    <input autofocus type="text" name="username" placeholder="Username">
+    <input type="email" name="email" placeholder="Email Address">
+    <input type="password" name="password" placeholder="Password">
+    <input type="password" name="confirmation" placeholder="Confirm Password">
+    <input type="submit" value="Register">
+</form>
+
+<p>
+    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+</p>
+
+{% endblock %}
