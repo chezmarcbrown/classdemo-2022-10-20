@@ -22,13 +22,7 @@ class Flight(models.Model):
 class Passenger(models.Model):
     first = models.CharField(max_length = 64)
     last = models.CharField(max_length = 64)
-    flights = models.ManyToManyField(Flight, blank=True, related_name="passengers", through='Booking')
+    flights = models.ManyToManyField(Flight, blank=True, related_name="passengers")
 
     def __str__(self):
         return f'{self.first} {self.last}'
-
-from django.contrib.auth.models import User
-class Booking(models.Model):
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
-    booker = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookers")

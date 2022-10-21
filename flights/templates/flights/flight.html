@@ -1,6 +1,6 @@
 {% extends "flights/layout.html" %}
 
-{% block body %}
+{% block body %} 
 
 <h1>Flight #{{flight.id}}</h1>
 
@@ -10,7 +10,6 @@
     <li>Duration: {{ flight.duration }}</li>
 </ul>
 
-<!-- 
 <h2>Passengers</h2>
 
 <ul>
@@ -21,34 +20,18 @@
     <li>No passengers on this flight.</li>
     {% endfor %}
 </ul>
- -->
 
-<h2>Bookings</h2>
-<ul>
-    {% for b in bookings %}
-    <li>{{b.passenger}} (booked by {{b.booker}})</li>
-    {% empty %}
-    <li>No passengers</li>
-    {% endfor %}
-</ul>
-
-{% if user.is_authorized %}
 <h2>Book a Flight</h2>
 
-<form action="{% url 'flights:book' flight.id %}" method="post">
+<form action="{% url 'book' flight.id %}" method="post">
     {% csrf_token %}
     <select name="passenger">
-        {% for p in non_passengers %}
-        <option value="{{p.id}}">{{p}}</option>
-        {% endfor %}
+        {% for p in non_passengers %} 
+         <option value="{{p.id}}" >{{p}}</option> 
+         {% endfor %}
         <input type="submit" value="Book Flight!">
     </select>
 </form>
-{% else %}
-You must be logged in in order to book a flight.
-{% endif %}
+<a href="{% url 'index' %}">Back to full list of flights</a>
 
-<p>
-    <a href="{% url 'flights:index' %}">Back to full list of flights</a>
-</p>
 {% endblock %}

@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'movies/moviestyles.css' %}" rel="stylesheet">
+    <title>Django ModelForms</title>
+  </head>
+  <body>
+    <header>
+
+      {% for m in messages %}
+      <h2 class="{{m.tags}}">{{m}}</h2>
+      {% endfor %}
+
+
+      <h2>Add a new movie</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{movie_form}}
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </header>
+
+    <main>
+      <h2>Movies</h2>
+      <div class="moviegrid">
+        {% for m in movies %}
+        <article>
+          {% if m.movie_poster %}
+          <div style="display:flex;justify-content:space-evenly;">
+            <img src="{{ m.movie_poster.url }}" width="200px">
+          </div>
+          {% endif %}
+          <h4>{{m.movie_title}}</h4>
+          <p>{{m.release_year}} | {{m.director}} | {{m.rating}} </p>
+          <p>{{m.movie_plot}}</p>
+        </article>
+        {% empty %}
+        <p>No movies added.</p>
+        {% endfor %}
+      </div>
+    </main>
+  </body>
+
+</html>
