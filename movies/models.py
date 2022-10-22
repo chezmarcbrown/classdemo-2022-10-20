@@ -2,6 +2,7 @@ from django.db import models
 from django.core.files import File
 from urllib.request import urlopen
 from tempfile import NamedTemporaryFile
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 def validate_rating(value):
@@ -22,16 +23,15 @@ class Movie(models.Model):
 	rating = models.FloatField(default=0.0, validators=[validate_rating])
 	
 	def save(self, *args, **kwargs):
+		super(Movie, self).save(*args, **kwargs)
 		if self.movie_poster_url and not self.movie_poster:
 			img_temp = NamedTemporaryFile(delete=True)
 			img_temp.write(urlopen(self.movie_poster_url).read())
 			img_temp.flush()
 			self.movie_poster.save(f"image_{self.pk}", File(img_temp))
-		super(Movie, self).save(*args, **kwargs)
-
+			super(Movie, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return self.movie_title
 
-from django.core.exceptions import ValidationError
 
